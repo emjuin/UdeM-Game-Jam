@@ -1,8 +1,7 @@
 using UnityEngine;
-using TMPro; // Fixed: Added the 'ro' back!
+using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,139 +9,55 @@ public class GameManager : MonoBehaviour
     public class LevelData
     {
         public string catPrompt;
+        public string option1;
+        public string option2;
+        public string option3;
         public string correctItem;
         public string utilityText;
     }
 
-    [Header("UI Panels")]
+    [Header("UI Folders")]
     public GameObject menuPanel;
-    public GameObject tutorialImage;
     public GameObject gameUI;
 
-    [Header("UI References")]
-    public TextMeshProUGUI catSpeech;
-    public Image[] starImages;       // Drag your 5 Black Star objects here
-    public Sprite goldStarSprite;    // Drag your Golden Star Sprite asset here
-    public TextMeshProUGUI[] buttonTexts;
+    [Header("Text Boxes")]
+    public TextMeshProUGUI catSpeech; // Glisse 'CatSpeech_Text' ici
+    public TextMeshProUGUI trueFalseText; // Glisse 'True_False' ici
+
+    [Header("Stars & Buttons")]
+    public Image[] starImages;
+    public Sprite goldStarSprite;
+    public Sprite blackStarSprite;
+    public TextMeshProUGUI[] buttonTexts; // Les 3 textes de tes boutons Option 1, 2, 3
     public GameObject nextButton;
     public GameObject restartButton;
 
-    // --- LEVELS ---
+    // --- TES SCÉNARIOS FIXES ---
     private List<LevelData> summerDay = new List<LevelData>() {
-        new LevelData { catPrompt = "Le soleil pique mes yeux !", correctItem = "Lunettes", utilityText = "Les lunettes protègent tes yeux." },
-        new LevelData { catPrompt = "Il commence à pleuvoir...", correctItem = "Imperméable", utilityText = "L'imperméable te garde au sec." },
-        new LevelData { catPrompt = "Le sable est très chaud !", correctItem = "Sandales", utilityText = "Les sandales évitent de se brûler." },
-        new LevelData { catPrompt = "C'est la canicule !", correctItem = "Creme Solaire", utilityText = "La crème protège ta peau." },
-        new LevelData { catPrompt = "Ma tête chauffe trop !", correctItem = "Casquette", utilityText = "La casquette te garde à l'ombre." }
+        new LevelData { catPrompt = "Le soleil est très fort aujourd'hui. Comment protéger la tête de Kim ?", option1 = "Tuque", option2 = "Parapluie", option3 = "Casquette", correctItem = "Casquette", utilityText = "La casquette protège la tête du soleil !" },
+        new LevelData { catPrompt = "Kim passe la journée à la plage. Qu’est-ce que Kim devra porter ?", option1 = "Maillot de bain", option2 = "Patins", option3 = "Imperméable", correctItem = "Maillot de bain", utilityText = "Le maillot est parfait pour la baignade !" },
+        new LevelData { catPrompt = "Pour se rendre à la plage, quelles chaussures choisir ?", option1 = "Bottes de pluie", option2 = "Bottes de neige", option3 = "Sandales", correctItem = "Sandales", utilityText = "Les sandales sont idéales pour le sable chaud." },
+        new LevelData { catPrompt = "Il fait très chaud ! Qu’est-ce que Kim peut acheter pour se rafraîchir ?", option1 = "Chocolat chaud", option2 = "Sac de chips", option3 = "Crème glacée", correctItem = "Crème glacée", utilityText = "Miam ! La crème glacée rafraîchit tout le monde." },
+        new LevelData { catPrompt = "Qu’est-ce qui est essentiel pour passer la journée au soleil ?", option1 = "Collation", option2 = "Crème solaire", option3 = "Salopette de neige", correctItem = "Crème solaire", utilityText = "La crème solaire protège la peau des brûlures." }
     };
 
     private List<LevelData> winterDay = new List<LevelData>() {
-        new LevelData { catPrompt = "Mes oreilles sont gelées !", correctItem = "Tuque", utilityText = "La tuque garde tes oreilles au chaud." },
-        new LevelData { catPrompt = "On va glisser sur la glace !", correctItem = "Patins", utilityText = "Les patins sont faits pour la glace." },
-        new LevelData { catPrompt = "Il y a une tempête !", correctItem = "Salopette", utilityText = "La salopette te protège de la neige." },
-        new LevelData { catPrompt = "Mes mains sont froides.", correctItem = "Gants", utilityText = "Les gants gardent tes doigts au chaud." },
-        new LevelData { catPrompt = "Je veux jouer dehors !", correctItem = "Manteau", utilityText = "Le manteau est indispensable en hiver." }
+        new LevelData { catPrompt = "Les rues sont enneigées. Comment protéger la tête de Kim du froid ?", option1 = "Tuque", option2 = "Parapluie", option3 = "Casquette", correctItem = "Tuque", utilityText = "La tuque garde les oreilles bien au chaud !" },
+        new LevelData { catPrompt = "Les lacs sont gelés ! Qu’est-ce que Kim porte pour patiner ?", option1 = "Maillot de bain", option2 = "Patins", option3 = "Imperméable", correctItem = "Patins", utilityText = "Avec les patins, Kim peut glisser sur la glace." },
+        new LevelData { catPrompt = "Pour se rendre à la patinoire, quelles chaussures porter ?", option1 = "Bottes de pluie", option2 = "Bottes de neige", option3 = "Sandales", correctItem = "Bottes de neige", utilityText = "Les bottes de neige gardent les pieds au sec." },
+        new LevelData { catPrompt = "Il fait très froid. Qu’est-ce que Kim peut acheter pour se réchauffer ?", option1 = "Chocolat chaud", option2 = "Sac de chips", option3 = "Crème glacée", correctItem = "Chocolat chaud", utilityText = "Un bon chocolat chaud, ça réchauffe le cœur !" },
+        new LevelData { catPrompt = "Qu’est-ce qui est essentiel pour rester dehors toute la journée ?", option1 = "Collation", option2 = "Crème solaire", option3 = "Salopette de neige", correctItem = "Salopette de neige", utilityText = "La salopette empêche d'avoir froid dans la neige." }
     };
 
     private List<LevelData> activeRounds = new List<LevelData>();
     private int currentRoundIndex = 0;
     private int score = 0;
-    private string[] allItems = { "Tuque", "Manteau", "Bottes de neige", "Salopette", "Gants", "Patins", "Casquette", "Lunettes", "Sandales", "Maillot", "Creme Solaire", "Parapluie", "Imperméable", "Bottes de pluie" };
 
     void Start()
     {
+        ShowMainMenu();
+    }
+
+    public void ShowMainMenu()
+    {
         menuPanel.SetActive(true);
-        if (tutorialImage != null) tutorialImage.SetActive(true);
-        gameUI.SetActive(false);
-        nextButton.SetActive(false);
-        restartButton.SetActive(false);
-        catSpeech.text = "Chat : Salut ! C'est quelle saison aujourd'hui ?";
-    }
-
-    public void ChooseSummer()
-    {
-        activeRounds = new List<LevelData>(summerDay);
-        StartGame();
-    }
-
-    public void ChooseWinter()
-    {
-        activeRounds = new List<LevelData>(winterDay);
-        StartGame();
-    }
-
-    void StartGame()
-    {
-        menuPanel.SetActive(false);
-        if (tutorialImage != null) tutorialImage.SetActive(false);
-        gameUI.SetActive(true);
-        SetupRound();
-    }
-
-    public void SetupRound()
-    {
-        nextButton.SetActive(false);
-        LevelData current = activeRounds[currentRoundIndex];
-        catSpeech.text = "Chat : " + current.catPrompt;
-
-        List<string> choices = new List<string> { current.correctItem };
-        List<string> losers = new List<string>(allItems);
-        losers.Remove(current.correctItem);
-
-        for (int i = 0; i < 2; i++)
-        {
-            int r = Random.Range(0, losers.Count);
-            choices.Add(losers[r]);
-            losers.RemoveAt(r);
-        }
-
-        for (int i = 0; i < choices.Count; i++)
-        {
-            int rnd = Random.Range(i, choices.Count);
-            string temp = choices[i];
-            choices[i] = choices[rnd];
-            choices[rnd] = temp;
-            buttonTexts[i].text = choices[i];
-        }
-    }
-
-    public void CheckChoice(TextMeshProUGUI clickedText)
-    {
-        LevelData current = activeRounds[currentRoundIndex];
-
-        if (clickedText.text == current.correctItem)
-        {
-            if (score < starImages.Length)
-            {
-                starImages[score].sprite = goldStarSprite;
-            }
-            score++;
-            catSpeech.text = "<b>Bravo !</b>\n" + current.utilityText;
-        }
-        else
-        {
-            catSpeech.text = "<b>Beurk...</b>\n" + current.utilityText;
-        }
-
-        nextButton.SetActive(true);
-    }
-
-    public void GoToNextRound()
-    {
-        currentRoundIndex++;
-        if (currentRoundIndex < 5) SetupRound();
-        else EndGame();
-    }
-
-    void EndGame()
-    {
-        catSpeech.text = "Partie terminée ! Score : " + score + "/5";
-        nextButton.SetActive(false);
-        restartButton.SetActive(true);
-    }
-
-    public void RestartGame()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-}
