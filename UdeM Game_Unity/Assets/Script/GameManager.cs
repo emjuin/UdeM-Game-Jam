@@ -30,6 +30,11 @@ public class GameManager : MonoBehaviour
     public GameObject nextButton;
     public GameObject restartButton;
 
+    [Header("Audio")]
+    public AudioSource sfxSource;
+    public AudioClip catMeowSound;
+    public AudioClip correctSound; // NEW: Drag a success chime here!
+
     private List<LevelData> summerDay = new List<LevelData>() {
         new LevelData { catPrompt = "Nous sommes en juillet, l'été au Québec! Le soleil est très fort. Comment Kim pourra protéger sa tête?", option1 = "Tuque", option2 = "Parapluie", option3 = "Casquette", correctItem = "Casquette", utilityText = "La casquette protège la tête du soleil !" },
         new LevelData { catPrompt = "Kim passe la journée à la plage avec sa famille. Qu’est-ce que Kim devra porter ?", option1 = "Maillot de bain", option2 = "Patins", option3 = "Imperméable", correctItem = "Maillot de bain", utilityText = "Le maillot est parfait pour la baignade !" },
@@ -49,7 +54,7 @@ public class GameManager : MonoBehaviour
     private List<LevelData> activeRounds = new List<LevelData>();
     private int currentRoundIndex = 0;
     private int score = 0;
-    private bool isRoundOver = false; // THE SAFETY SWITCH
+    private bool isRoundOver = false;
 
     void Start()
     {
@@ -63,15 +68,9 @@ public class GameManager : MonoBehaviour
         nextButton.SetActive(false);
         restartButton.SetActive(false);
         trueFalseText.text = "";
-
         score = 0;
         currentRoundIndex = 0;
-
-        foreach (Image img in starImages)
-        {
-            if (img != null) img.color = new Color(0.2f, 0.2f, 0.2f, 1f);
-        }
-
+        foreach (Image img in starImages) { if (img != null) img.color = new Color(0.2f, 0.2f, 0.2f, 1f); }
         catSpeech.text = "Salut ! C'est quelle saison aujourd'hui ?";
     }
 
@@ -96,11 +95,16 @@ public class GameManager : MonoBehaviour
 
     public void SetupRound()
     {
-        isRoundOver = false; // Reset the switch for the new level
+        isRoundOver = false;
         nextButton.SetActive(false);
         trueFalseText.text = "";
         LevelData current = activeRounds[currentRoundIndex];
         catSpeech.text = current.catPrompt;
+
+        if (sfxSource != null && catMeowSound != null)
+        {
+            sfxSource.PlayOneShot(catMeowSound);
+        }
 
         buttonTexts[0].text = current.option1;
         buttonTexts[1].text = current.option2;
@@ -109,21 +113,19 @@ public class GameManager : MonoBehaviour
 
     public void CheckChoice(TextMeshProUGUI clickedText)
     {
-        // If the player already chose, stop right here!
         if (isRoundOver) return;
-
-        isRoundOver = true; // Lock the level
+        isRoundOver = true;
         LevelData current = activeRounds[currentRoundIndex];
 
         if (clickedText.text == current.correctItem)
         {
-            if (score < starImages.Length)
-            {
-                starImages[score].color = Color.white;
-            }
+            if (score < starImages.Length) starImages[score].color = Color.white;
             score++;
             trueFalseText.text = "Bravo !";
             trueFalseText.color = Color.green;
+
+            // Play Correct Chime
+            if (sfxSource != null && correctSound != null) sfxSource.PlayOneShot(correctSound);
         }
         else
         {
@@ -144,7 +146,7 @@ public class GameManager : MonoBehaviour
 
     void EndGame()
     {
-        catSpeech.text = "Wow, bravo! Grâce à toi, Kim est prêt pour sa journée!\n\nEn connaissant tous ces mots, tu es un super assistant!";
+        catSpeech.text = "Wow, bravo! Grâce à toi, Kim est prêt pour sa journée!\n\nTu es un super assistant!";
         trueFalseText.text = "";
         nextButton.SetActive(false);
         restartButton.SetActive(true);
