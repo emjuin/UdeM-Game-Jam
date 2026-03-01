@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 8f6ec7c665831c140a95dbf74d62f5f9
+guid: d1edd2e33168d2a4090eab1ba37bde16
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3654896071618036197
-    second: IMG_7088_0
+      213: 3988375130690136662
+    second: Chat petit sourire _0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: IMG_7088_0
+      name: Chat petit sourire _0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b1e7c382363374dc0800000000000000
-      internalID: -3654896071618036197
+      spriteID: 65aa9cfcc0e895730800000000000000
+      internalID: 3988375130690136662
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      IMG_7088_0: -3654896071618036197
+      Chat petit sourire _0: 3988375130690136662
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
