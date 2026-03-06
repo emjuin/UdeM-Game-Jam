@@ -9,9 +9,7 @@ public class GameManager : MonoBehaviour
     public class LevelData
     {
         public string catPrompt;
-        public string option1;
-        public string option2;
-        public string option3;
+        public string option1, option2, option3;
         public string correctItem;
         public string utilityText;
     }
@@ -26,29 +24,36 @@ public class GameManager : MonoBehaviour
 
     [Header("Stars & Buttons")]
     public Image[] starImages;
+    public Button[] optionButtons;
     public TextMeshProUGUI[] buttonTexts;
     public GameObject nextButton;
     public GameObject restartButton;
+    public GameObject quitButton;
+
+    [Header("Cat Visuals")]
+    public GameObject catNormal;
+    public GameObject catWrong;
+    public GameObject catHappy;
 
     [Header("Audio")]
     public AudioSource sfxSource;
     public AudioClip catMeowSound;
-    public AudioClip correctSound; // NEW: Drag a success chime here!
+    public AudioClip correctSound;
 
     private List<LevelData> summerDay = new List<LevelData>() {
-        new LevelData { catPrompt = "Nous sommes en juillet. C'est l'été au Québec! Le soleil est très fort. Comment Kim pourra protéger sa tête?", option1 = "Une tuque", option2 = "Un parapluie", option3 = "Une casquette", correctItem = "Une casquette", utilityText = "La casquette (cap) protège la tête du soleil !" },
-        new LevelData { catPrompt = "Kim passe la journée à la plage avec sa famille. Qu’est-ce que Kim devra porter ?", option1 = "Un maillot de bain", option2 = "Des patins", option3 = "Un imperméable", correctItem = "Un maillot de bain", utilityText = "Le maillot (swiw suit) est parfait pour la baignade !" },
-        new LevelData { catPrompt = "Pour se rendre à la plage, quel type de chaussures Kim devrait emporter ?", option1 = "Des bottes de pluie", option2 = "Des bottes de neige", option3 = "Des andales", correctItem = "Des sandales", utilityText = "Les sandales (sandals) sont idéales pour marcher dans le sable chaud." },
-        new LevelData { catPrompt = "Il va faire très chaud sur la plage. Qu’est-ce que Kim pourra acheter pour se rafraîchir ?", option1 = "Du chocolat chaud", option2 = "Un sac de chips", option3 = "De la crème glacée", correctItem = "De la crème glacée", utilityText = "Miam ! La crème glacée (ice cream) rafraîchit Kim." },
-        new LevelData { catPrompt = "Qu’est-ce qui est essentiel pour se protéger du soleil toute la journée ?", option1 = "Une collation", option2 = "De la crème solaire", option3 = "Une salopette de neige", correctItem = "De la crème solaire", utilityText = "La crème solaire (sun screen) protège Kim des brûlures." }
+        new LevelData { catPrompt = "Le soleil est très fort. Comment Kim pourra protéger sa tête?", option1 = "Une tuque", option2 = "Un parapluie", option3 = "Une casquette", correctItem = "Une casquette", utilityText = "Une casquette protège la tête du soleil !" },
+        new LevelData { catPrompt = "Kim passe la journée à la plage. Qu’est-ce que Kim devra porter ?", option1 = "Un maillot de bain", option2 = "Des patins", option3 = "Un imperméable", correctItem = "Un maillot de bain", utilityText = "Un maillot de bain est parfait pour la baignade !" },
+        new LevelData { catPrompt = "Quelles chaussures Kim devrait emporter à la plage ?", option1 = "Des bottes de pluie", option2 = "Des bottes de neige", option3 = "Des sandales", correctItem = "Des sandales", utilityText = "Des sandales sont idéales pour le sable chaud." },
+        new LevelData { catPrompt = "Il va faire très chaud ! Qu’est-ce que Kim pourra acheter pour se rafraîchir ?", option1 = "Un chocolat chaud", option2 = "Un sac de chips", option3 = "Une crème glacée", correctItem = "Une crème glacée", utilityText = "Miam ! Une crème glacée rafraîchit Kim." },
+        new LevelData { catPrompt = "Qu’est-ce qui est essentiel pour se protéger du soleil toute la journée ?", option1 = "Une collation", option2 = "De la crème solaire", option3 = "Une salopette de neige", correctItem = "De la crème solaire", utilityText = "La crème solaire protège Kim des brûlures." }
     };
 
     private List<LevelData> winterDay = new List<LevelData>() {
-        new LevelData { catPrompt = "C'est l'hiver au Québec! Les rues sont enneigées. Comment Kim pourra protéger sa tête du froid?", option1 = "Tuque", option2 = "Un parapluie", option3 = "Une casquette", correctItem = "Une tuque", utilityText = "La tuque (beanie) garde les oreilles de Kim bien au chaud !" },
-        new LevelData { catPrompt = "Les lacs sont gelés, c'est le temps de patiner! Qu’est-ce que Kim devra porter à la patinoire ?", option1 = "Un maillot de bain", option2 = "Des patins", option3 = "Un imperméable", correctItem = "Des patins", utilityText = "Avec les patins (ice skates), Kim peut glisser sur la glace." },
-        new LevelData { catPrompt = "Pour se rendre à la patinoire, quel type de chaussures Kim devrait porter ?", option1 = "Des bottes de pluie", option2 = "Des bottes de neige", option3 = "Des sandales", correctItem = "Des bottes de neige", utilityText = "Les bottes de neige (snow boots) gardent les pieds au sec." },
-        new LevelData { catPrompt = "Dehors, il fait très froid. Qu’est-ce que Kim pourra acheter pour se réchauffer ?", option1 = "Du chocolat chaud", option2 = "Un sac de chips", option3 = "De la crème glacée", correctItem = "Du chocolat chaud", utilityText = "Un bon chocolat chaud (hot chocolate) réchauffe Kim immédiatement !" },
-        new LevelData { catPrompt = "Qu’est-ce qui est essentiel pour se protéger du froid toute la journée ?", option1 = "Une collation", option2 = "De la crème solaire", option3 = "Une salopette de neige", correctItem = "Une salopette de neige", utilityText = "La salopette (snow pants) empêche Kim d'avoir froid dans la neige." }
+        new LevelData { catPrompt = "C'est l'hiver ! Comment Kim pourra protéger sa tête du froid ?", option1 = "Une tuque", option2 = "Un parapluie", option3 = "Une casquette", correctItem = "Une tuque", utilityText = "Une tuque garde les oreilles au chaud !" },
+        new LevelData { catPrompt = "Qu’est-ce que Kim devra porter à la patinoire ?", option1 = "Un maillot de bain", option2 = "Des patins", option3 = "Un imperméable", correctItem = "Des patins", utilityText = "Avec des patins, Kim peut glisser sur la glace." },
+        new LevelData { catPrompt = "Pour se rendre à la patinoire, quel type de chaussures Kim devrait porter ?", option1 = "Des bottes de pluie", option2 = "Des bottes de neige", option3 = "Des sandales", correctItem = "Des bottes de neige", utilityText = "Des bottes de neige gardent les pieds au sec." },
+        new LevelData { catPrompt = "Dehors, il fait très froid. Qu’est-ce que Kim pourra acheter pour se réchauffer ?", option1 = "Un chocolat chaud", option2 = "Un sac de chips", option3 = "Une crème glacée", correctItem = "Un chocolat chaud", utilityText = "Un bon chocolat chaud réchauffe Kim immédiatement !" },
+        new LevelData { catPrompt = "Qu’est-ce qui est essentiel pour se protéger du froid toute la journée ?", option1 = "Une collation", option2 = "De la crème solaire", option3 = "Une salopette de neige", correctItem = "Une salopette de neige", utilityText = "Une salopette empêche Kim d'avoir froid dans la neige." }
     };
 
     private List<LevelData> activeRounds = new List<LevelData>();
@@ -56,10 +61,7 @@ public class GameManager : MonoBehaviour
     private int score = 0;
     private bool isRoundOver = false;
 
-    void Start()
-    {
-        ShowMainMenu();
-    }
+    void Start() { ShowMainMenu(); }
 
     public void ShowMainMenu()
     {
@@ -67,24 +69,22 @@ public class GameManager : MonoBehaviour
         gameUI.SetActive(false);
         nextButton.SetActive(false);
         restartButton.SetActive(false);
-        trueFalseText.text = "";
-        score = 0;
-        currentRoundIndex = 0;
+        if (quitButton != null) quitButton.SetActive(true);
+        SetCatFace("normal");
+        trueFalseText.text = ""; score = 0; currentRoundIndex = 0;
         foreach (Image img in starImages) { if (img != null) img.color = new Color(0.2f, 0.2f, 0.2f, 1f); }
-        catSpeech.text = "Salut ! Je suis le chat de Kim, un enfant récemment arrivé au Québec! Kim dort. Aide-moi à préparer ce dont Kim aura besoin pour la journée qui l’attend. \n\n Choisis la saison que tu préfères, puis clique sur la meilleure option à chaque choix .";
+        catSpeech.text = "Salut, je suis le chat de Kim, un enfant récemment arrivé au Québec! Kim dort. Aide moi à préparer sa journée en attendant.\n\nChoisis la saison que tu préfères, puis clique sur la meilleure option à chaque choix. !";
     }
 
-    public void ChooseSummer()
+    void SetCatFace(string type)
     {
-        activeRounds = new List<LevelData>(summerDay);
-        StartGame();
+        catNormal.SetActive(type == "normal");
+        catWrong.SetActive(type == "wrong");
+        catHappy.SetActive(type == "happy");
     }
 
-    public void ChooseWinter()
-    {
-        activeRounds = new List<LevelData>(winterDay);
-        StartGame();
-    }
+    public void ChooseSummer() { activeRounds = new List<LevelData>(summerDay); StartGame(); }
+    public void ChooseWinter() { activeRounds = new List<LevelData>(winterDay); StartGame(); }
 
     void StartGame()
     {
@@ -95,20 +95,16 @@ public class GameManager : MonoBehaviour
 
     public void SetupRound()
     {
-        isRoundOver = false;
-        nextButton.SetActive(false);
-        trueFalseText.text = "";
+        isRoundOver = false; nextButton.SetActive(false); trueFalseText.text = "";
+        SetCatFace("normal");
         LevelData current = activeRounds[currentRoundIndex];
         catSpeech.text = current.catPrompt;
-
-        if (sfxSource != null && catMeowSound != null)
+        if (sfxSource != null && catMeowSound != null) sfxSource.PlayOneShot(catMeowSound);
+        for (int i = 0; i < optionButtons.Length; i++)
         {
-            sfxSource.PlayOneShot(catMeowSound);
+            optionButtons[i].image.color = Color.white;
+            buttonTexts[i].text = (i == 0) ? current.option1 : (i == 1) ? current.option2 : current.option3;
         }
-
-        buttonTexts[0].text = current.option1;
-        buttonTexts[1].text = current.option2;
-        buttonTexts[2].text = current.option3;
     }
 
     public void CheckChoice(TextMeshProUGUI clickedText)
@@ -116,23 +112,24 @@ public class GameManager : MonoBehaviour
         if (isRoundOver) return;
         isRoundOver = true;
         LevelData current = activeRounds[currentRoundIndex];
+        foreach (Button btn in optionButtons) { btn.image.color = new Color(0.5f, 0.5f, 0.5f, 1f); }
+        clickedText.transform.parent.GetComponent<Image>().color = Color.white;
 
-        if (clickedText.text == current.correctItem)
+        if (clickedText.text.Trim().ToLower() == current.correctItem.Trim().ToLower())
         {
             if (score < starImages.Length) starImages[score].color = Color.white;
             score++;
-            trueFalseText.text = "Bravo !";
+            trueFalseText.text = "Bravo ! C'est la bonne réponse !";
             trueFalseText.color = Color.green;
-
-            // Play Correct Chime
+            SetCatFace("happy");
             if (sfxSource != null && correctSound != null) sfxSource.PlayOneShot(correctSound);
         }
         else
         {
-            trueFalseText.text = "Ce n'est pas tout à fait ça, mais bien essayé! C'est en essayant qu'on apprend!";
+            trueFalseText.text = "Ce n'est pas tout à fait ça, mais bien essayé !";
             trueFalseText.color = Color.red;
+            SetCatFace("wrong");
         }
-
         catSpeech.text = current.utilityText;
         nextButton.SetActive(true);
     }
@@ -146,14 +143,24 @@ public class GameManager : MonoBehaviour
 
     void EndGame()
     {
-        catSpeech.text = "Wow, bravo! Grâce à toi, Kim est prêt pour sa journée!\n\nTu es un super assistant!";
+        if (score > 0)
+        {
+            catSpeech.text = "Bravo ! Grâce à toi, Kim est prêt pour sa journée !";
+        }
+        else
+        {
+            catSpeech.text = "Oups ! Kim n'a pas tout ce qu'il lui faut. Veux-tu réessayer ?";
+        }
+        SetCatFace("happy");
         trueFalseText.text = "";
         nextButton.SetActive(false);
         restartButton.SetActive(true);
     }
 
-    public void RestartGame()
+    public void RestartGame() { ShowMainMenu(); }
+    public void QuitGame()
     {
-        ShowMainMenu();
+        Debug.Log("Quit Requested");
+        Application.Quit();
     }
 }
